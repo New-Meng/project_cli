@@ -1,0 +1,44 @@
+{
+  // 访问 https://aka.ms/tsconfig 了解此文件的更多信息
+  "compilerOptions": {
+    // 文件布局, tsc 构建哪些东西，及输出目录
+    "rootDir": "./src",
+    "outDir": "./bin",
+
+    // 环境设置
+    // 另请参阅 https://aka.ms/tsconfig/module
+    "module": "nodenext",
+    "target": "esnext",
+    "types": ["node"],
+    // 针对 Node.js：
+    // "lib": ["esnext"],
+    // "types": ["node"],
+    // 并执行 npm install -D @types/node
+
+    // 其他输出
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // 更严格的类型检查选项
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // 代码风格选项
+    // "noImplicitReturns": true,
+    // "noImplicitOverride": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noPropertyAccessFromIndexSignature": true,
+
+    // 推荐选项
+    "strict": true,
+    "jsx": "react-jsx",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true
+  }
+}
