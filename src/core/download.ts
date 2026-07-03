@@ -10,27 +10,31 @@ export const downloadRepoZip = async (
   url: string,
 ): Promise<string | unknown> => {
   return new Promise(async (resolve, reject) => {
-    const res = await axios.get(url, {
-      responseType: "stream",
-      maxRedirects: 5,
-    });
+    try {
+      const res = await axios.get(url, {
+        responseType: "stream",
+        maxRedirects: 5,
+      });
 
-    // 建立临时文件
-    const dest = path.resolve(process.cwd(), `${DEFAULT_DOWNLOAD_NAME}`);
-    const writer = fs.createWriteStream(dest);
+      // 建立临时文件
+      const dest = path.resolve(process.cwd(), `${DEFAULT_DOWNLOAD_NAME}`);
+      const writer = fs.createWriteStream(dest);
 
-    writer.on("finish", () => {
-      resolve(dest);
-    });
-    writer.on("error", (error) => {
-      reject("文件写入失败");
-    });
+      writer.on("finish", () => {
+        resolve(dest);
+      });
+      writer.on("error", () => {
+        reject("文件写入失败");
+      });
 
-    res.data.on("error", (error: unknown) => {
+      res.data.on("error", () => {
+        reject("下载文件失败");
+      });
+
+      res.data.pipe(writer);
+    } catch (error) {
       reject("下载文件失败");
-    });
-
-    res.data.pipe(writer);
+    }
   });
 };
 
