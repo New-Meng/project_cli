@@ -1,5 +1,9 @@
 import type { Command } from "commander";
 import { initPrompts } from "./prompts.js";
+import {
+  downloadRepoZip,
+  uncompressZipAndDelete,
+} from "../../core/download.js";
 const registerInitCommand = (program: Command) => {
   return program
     .command("init")
@@ -7,7 +11,11 @@ const registerInitCommand = (program: Command) => {
     .action(async (str) => {
       console.log(str, "++??");
       const res = await initPrompts();
-      console.log(res, '++??ers')
+      if (res && res.templateGitUrl) {
+        const zipPath = await downloadRepoZip(res.templateGitUrl);
+        await uncompressZipAndDelete(zipPath);
+        console.log("项目初始化完成!");
+      }
     });
 };
 

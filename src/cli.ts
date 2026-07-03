@@ -6,7 +6,6 @@ import { registerGetConfigCommand } from "./commands/getConfig/index.js";
 import { registerSetConfigCommand } from "./commands/setConfig/index.js";
 
 import { Command } from "commander";
-const a: number = 1;
 const program = new Command();
 
 // 设置基础信息

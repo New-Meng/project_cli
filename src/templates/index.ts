@@ -15,4 +15,5 @@ export const DEFAULT_PROJECT_TEMPLATE: TemplateItem[] = [
 // 默认配置文件
 export const DEFAULT_CONFIG_FILE: ConfigFileInterface = {
   projectTemplate: DEFAULT_PROJECT_TEMPLATE,
+  baseUrl: "https://github.com/",
 };
