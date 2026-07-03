@@ -16,13 +16,14 @@ const registerInitCommand = (program: Command) => {
         try {
           const zipPath = await downloadRepoZip(res.templateGitUrl);
           if (zipPath) {
+            spinner.text = "解压中...";
             await uncompressZipAndDelete(zipPath as string);
             spinner.succeed("项目初始化完成!");
           } else {
-            spinner.fail("下载文件失败");
+            spinner.fail("新增模板文件失败");
           }
         } catch (error) {
-          spinner.fail("项目初始化失败" + error);
+          spinner.fail(error as string);
         }
       }
     });

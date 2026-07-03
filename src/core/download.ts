@@ -23,11 +23,11 @@ export const downloadRepoZip = async (
       resolve(dest);
     });
     writer.on("error", (error) => {
-      reject(error);
+      reject("文件写入失败");
     });
 
     res.data.on("error", (error: unknown) => {
-      reject(error);
+      reject("下载文件失败");
     });
 
     res.data.pipe(writer);
@@ -36,6 +36,11 @@ export const downloadRepoZip = async (
 
 // 解压文件，并删除文件
 export const uncompressZipAndDelete = async (zipPath: string) => {
-  const targetDir = process.cwd(); // 当前工作目录
-  await extractZip(zipPath, { dir: targetDir });
+  try {
+    const targetDir = process.cwd(); // 当前工作目录
+    await extractZip(zipPath, { dir: targetDir });
+    fs.unlinkSync(zipPath); // 删除临时文件
+  } catch (error) {
+    return Promise.reject("解压文件失败");
+  }
 };
