@@ -6,4 +6,5 @@ export interface TemplateItem {
 
 export interface ConfigFileInterface {
   projectTemplate?: TemplateItem[];
+  [key: string]: any;
 }
