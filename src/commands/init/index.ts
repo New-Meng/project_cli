@@ -1,3 +1,4 @@
+import ora from "ora";
 import type { Command } from "commander";
 import { initPrompts } from "./prompts.js";
 import {
@@ -9,15 +10,19 @@ const registerInitCommand = (program: Command) => {
     .command("init")
     .description("用于初始化项目")
     .action(async (str) => {
-      console.log(str, "++??");
       const res = await initPrompts();
+      const spinner = ora("下载中...").start();
       if (res && res.templateGitUrl) {
-        const zipPath = await downloadRepoZip(res.templateGitUrl);
-        if (zipPath) {
-          await uncompressZipAndDelete(zipPath as string);
-          console.log("项目初始化完成!");
-        } else {
-          console.log("下载文件失败");
+        try {
+          const zipPath = await downloadRepoZip(res.templateGitUrl);
+          if (zipPath) {
+            await uncompressZipAndDelete(zipPath as string);
+            spinner.succeed("项目初始化完成!");
+          } else {
+            spinner.fail("下载文件失败");
+          }
+        } catch (error) {
+          spinner.fail("项目初始化失败" + error);
         }
       }
     });
