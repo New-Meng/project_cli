@@ -9,31 +9,40 @@ import { DEFAULT_DOWNLOAD_NAME } from "../utils/constant.js";
 export const downloadRepoZip = async (
   url: string,
 ): Promise<string | unknown> => {
-  const res = await axios.get(url, {
-    responseType: "stream",
-    maxRedirects: 5,
-  });
+  return new Promise(async (resolve, reject) => {
+    const res = await axios.get(url, {
+      responseType: "stream",
+      maxRedirects: 5,
+    });
 
-  // 建立临时文件
-  const dest = path.resolve(process.cwd(), `${DEFAULT_DOWNLOAD_NAME}`);
-  const writer = fs.createWriteStream(dest);
+    // 建立临时文件
+    const dest = path.resolve(process.cwd(), `${DEFAULT_DOWNLOAD_NAME}`);
+    const writer = fs.createWriteStream(dest);
 
-  res.data.pipe(writer);
-
-  return new Promise<string>((resolve, reject) => {
-    debugger;
-    writer.on("finish", () => resolve(dest));
+    writer.on("finish", () => {
+      resolve(dest);
+    });
     writer.on("error", (error) => {
-      console.log("下载文件 error2:", error);
+      console.log("写入文件失败:", error);
       reject(error);
     });
+
+    res.data.on("error", (error: unknown) => {
+      console.log("下载文件失败:", error);
+    });
+
+    res.data.pipe(writer);
   });
 };
 
 // 解压文件，并删除文件
 export const uncompressZipAndDelete = async (zipPath: string) => {
-  const targetDir = process.cwd(); // 当前工作目录
+  try {
+    const targetDir = process.cwd(); // 当前工作目录
 
-  await extractZip(zipPath, { dir: targetDir });
-  console.log("解压完成!");
+    await extractZip(zipPath, { dir: targetDir });
+    console.log("解压完成!");
+  } catch (error) {
+    throw new Error("解压文件失败 " + error);
+  }
 };
