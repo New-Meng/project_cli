@@ -13,8 +13,12 @@ const registerInitCommand = (program: Command) => {
       const res = await initPrompts();
       if (res && res.templateGitUrl) {
         const zipPath = await downloadRepoZip(res.templateGitUrl);
-        await uncompressZipAndDelete(zipPath);
-        console.log("项目初始化完成!");
+        if (zipPath) {
+          await uncompressZipAndDelete(zipPath as string);
+          console.log("项目初始化完成!");
+        } else {
+          console.log("下载文件失败");
+        }
       }
     });
 };
