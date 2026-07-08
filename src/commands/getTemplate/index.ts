@@ -6,7 +6,8 @@ const registerGetTemplateCommand = (program: Command) => {
     .alias("listt")
     .description("获取文件模板")
     .action(async (childFile) => {
-      const templateList = getFilesDirName(`templates/${childFile}`);
+      const path = childFile ? `templates/${childFile}` : "templates";
+      const templateList = getFilesDirName(path);
       templateList.forEach((item) => {
         console.log(item);
       });

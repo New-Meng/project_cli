@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 // 上面时指定启动时，使用node来执行
 
-import { registerInitCommand } from "./commands/init/index.js";
+import {
+  initCodeTemplate,
+  registerInitCommand,
+  registerUseTemplates,
+} from "./commands/init/index.js";
 import { registerGetConfigCommand } from "./commands/getConfig/index.js";
 import { registerSetConfigCommand } from "./commands/setConfig/index.js";
 import { registerGetTemplateCommand } from "./commands/getTemplate/index.js";
@@ -12,6 +16,9 @@ const program = new Command();
 
 // 设置基础信息
 program.name("cytool").description("主要用于新项目的创建").version("0.0.1");
+
+await initCodeTemplate();
+registerUseTemplates(program);
 registerInitCommand(program);
 registerGetConfigCommand(program);
 registerSetConfigCommand(program);

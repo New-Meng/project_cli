@@ -3,7 +3,7 @@ import path from "path";
 import os from "os";
 import fse from "fs-extra";
 
-// 获取文件夹下的所有文件名
+// 获取配置文件夹下的所有文件名
 export const getFilesDirName = (childPath?: string) => {
   const tempPath = childPath ? `.cytool/${childPath}` : ".cytool/";
   const configDir = path.join(os.homedir(), tempPath);
@@ -24,6 +24,15 @@ export const getCurrentDir = (childPath?: string) => {
     ? path.join(process.cwd(), childPath)
     : process.cwd();
   return currentDir;
+};
+
+// 获取指定路径下的文件名称
+export const getCurrentDirChidlName = (dirPath: string) => {
+  if (!fs.existsSync(dirPath)) {
+    console.log(`目录不存在：${dirPath}`);
+  }
+  const items = fs.readdirSync(dirPath);
+  return items;
 };
 
 // 判断目录是否有文件夹，没有则创建
